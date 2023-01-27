@@ -1,0 +1,189 @@
+CREATE DATABASE biblioteca;
+
+USE biblioteca;
+
+-- CRIAÇÃO DAS TABELAS
+
+CREATE TABLE bibliotecario(
+                          id_bibliotecario int IDENTITY PRIMARY KEY,
+                          nome varchar(50) NOT NULL,
+                          matricula INT NOT NULL,
+                          email varchar(50)
+					);
+
+
+CREATE TABLE aquisicao(
+                          id_aquisicao int not null IDENTITY PRIMARY KEY,
+                          nome_livro varchar(50) not null,
+                          autor varchar(50) not null,
+                          isbn varchar(15) not null,
+                          fk_id_bibliotecario int,
+                          foreign key(fk_id_bibliotecario) references bibliotecario(id_bibliotecario)
+					);
+
+
+CREATE TABLE aluno(
+						id_aluno INT NOT NULL IDENTITY PRIMARY KEY,
+						nomeAluno VARCHAR(50) NOT NULL,
+						cpf VARCHAR(11) NOT NULL,
+						email VARCHAR(50)
+);
+
+
+CREATE TABLE endereco(
+						id_endereco INT NOT NULL IDENTITY PRIMARY KEY,
+						cep VARCHAR(8) NOT NULL,
+						rua VARCHAR(50) NOT NULL,
+						numero INT NOT NULL,
+						complemento VARCHAR(30),
+						fk_id_aluno INT,
+						FOREIGN KEY (fk_id_aluno) REFERENCES aluno(id_aluno)
+				);
+
+
+CREATE TABLE telefone (
+						id_telefone INT NOT NULL IDENTITY PRIMARY KEY,
+						telefone1 VARCHAR (11) NOT NULL,
+						telefone2 VARCHAR (11) NOT NULL,
+						fk_id_aluno INT,
+						FOREIGN KEY(fk_id_aluno) REFERENCES aluno(id_aluno)
+				);
+
+CREATE TABLE atendente(
+						id_atendente INT NOT NULL IDENTITY PRIMARY KEY,
+						nome VARCHAR(50) NOT NULL,
+						matricula INT NOT NULL,
+						email VARCHAR(50)
+				);
+
+
+CREATE TABLE livro(
+						id_livro INT NOT NULL IDENTITY PRIMARY KEY,
+						nome VARCHAR(50) NOT NULL,
+						autor VARCHAR(50) NOT NULL,
+						edicao VARCHAR(20) NOT NULL, 
+						isbn VARCHAR(15) NOT NULL
+			);
+
+CREATE TABLE reserva(
+						id_reserva INT NOT NULL IDENTITY PRIMARY KEY,
+						data_inicio date NOT NULL,
+						data_entrega date NOT NULL,
+						fk_id_aluno INT,
+						fk_id_livro INT,
+						fk_id_atendente INT,
+						FOREIGN KEY(fk_id_aluno) REFERENCES aluno(id_aluno),
+						FOREIGN KEY(fk_id_livro) REFERENCES livro(id_livro),
+						FOREIGN KEY(fk_id_atendente) REFERENCES atendente(id_atendente)
+			);
+
+
+
+-- INSERT DA TABELA BIBLIOTECARIO nome, matricula, email
+insert into bibliotecario(nome, matricula, email) VALUES ('Maria Oliveira Santos', '00235', 'mariasantos@gmail.com');
+insert into bibliotecario(nome, matricula, email) VALUES ('João Pedro Júnior', '00409', 'joaojunior@gmail.com');
+insert into bibliotecario(nome, matricula, email) VALUES ('Luiz Gustavo Santos', '00447', 'luizgustavo@gmail.com');
+insert into bibliotecario(nome, matricula, email) VALUES ('Lívia Farias Melo', '00681', 'liviamelo@gmail.com');
+
+
+-- INSERT DA TABELA AQUISIÇÃO - nome do livro, autor, isbn e a FOREIGN KEY ID do bibliotecario
+insert into aquisicao (nome_livro, autor, isbn, fk_id_bibliotecario) VALUES ('O mistério da fábrica de livros', 'Pedro Bandeira', '049714522004824', 1);
+insert into aquisicao (nome_livro, autor, isbn, fk_id_bibliotecario) VALUES ('A hora da estrela', 'Clarice Lispector', '109761522485203', 2);
+insert into aquisicao (nome_livro, autor, isbn, fk_id_bibliotecario) VALUES ('Aventura no Império do Sol','Silvia Cintra Franco','140088522445277',2);
+insert into aquisicao (nome_livro, autor, isbn, fk_id_bibliotecario) VALUES ('Lucíola','José de Alencar','119118522855244',3);
+insert into aquisicao (nome_livro, autor, isbn, fk_id_bibliotecario) values ('A serra dos dois meninos',' Aristides Fraga Lima','109118522155298',4);
+insert into aquisicao (nome_livro,autor,isbn, fk_id_bibliotecario) values(' Guerra e Paz','Liev Tolstói','182279522003239',3);
+insert into aquisicao (nome_livro,autor,isbn, fk_id_bibliotecario) values(' A Montanha Mágica','Thomas Mann','029008522004739',2);
+insert into aquisicao (nome_livro,autor,isbn, fk_id_bibliotecario) values(' O pequeno príncipe','Antoine de Saint-Exupéry','109788522005239',3);
+
+-- INSERT DA TABELA ALUNO - nome, cpf, email
+insert into aluno values('Antonia Freitas Santos', '41132140010', 'antoniasantos@gmail.com');
+insert into aluno values('Murilo Alves Filho', '12455564871', 'murilofilho@gmail.com');
+insert into aluno values('Jessilane Santos Silva', '30655581791', 'jessilanesilva@gmail.com');
+insert into aluno values('Cassio Freitas Pinto', '87946622380','cassiopinto@gmail.com');
+insert into aluno values('Samara Silva Holanda', '00122548804','samaraholanda@gmail.com');
+insert into aluno values('Ocelio Campos Sales','13663598741','oceliosales@gmail.com');
+insert into aluno values('Guilherme Pontes Silva','11478996551','guilhermesilva@gmail.com');
+insert into aluno values('Carlos Leandro Gomes Oliveira ','11910235540','carlosoliveira@gmail.com');
+
+
+-- INSERT DA TABELA ENDEREÇO
+-- cep,rua,numero,complemento,fk_id_aluno
+insert into endereco values('32322343','Alves Camargo','114','',1);
+insert into endereco values('34344524','5 de Agosto','297','Bloco A',2);
+insert into endereco values('98983431','São José','401','',3);
+insert into endereco values('23676893','Barbosa de Freitas','3587','Bloco B',4);
+insert into endereco values('32308970','João Anastácia','36','',5);
+insert into endereco values('33469113','Clarindo de Queiroz ','726','Apto 13',6);
+insert into endereco values('78988413','Sao Paulo','741','',7);
+insert into endereco values('11131658','Avenida da Abolicao','1078','Bloco C',8);
+
+
+
+-- INSERT DA TABELA TELEFONE- Telefone1, telefone2 e FOREIGN KEY ID do Aluno
+insert into telefone values('85999632532','85996857412',1);
+insert into telefone values('85998856471','85965823596',2);
+insert into telefone values('85974125632','85974125632',3);
+insert into telefone values('85996854236','85987451269',4);
+insert into telefone values('85996854555','85987453339',5);
+insert into telefone values('85996854226','85987451211',6);
+insert into telefone values('85996994236','85981151269',7);
+insert into telefone values('85996844436','85987451233',8);
+
+
+-- livro table insert
+-- nome, autor, edicao, isbn
+insert into livro values('Senhora','José de Alencar','1ª edição','2342047822342');
+insert into livro values('Cinco Minutos','José de Alencar','1ª edição','9443930394994');
+insert into livro values('Dom Casmurro','Machado de Assis','1ª edição','7176900026359');
+insert into livro values('O Alienista','Machado de Assis','1ª edição','4569193837626');
+insert into livro values('Frankenstein','Mary Shelley','1ª edição','1214746378311');
+insert into livro values('Kindred laços de sangue','Octavia Butler','1ª edição','9378474000329');
+insert into livro values('Admirável mundo novo','Aldous Huxley','2ª edição','4693020093837');
+insert into livro values('Um estranho numa Terra estranha','Robert A. Heilein','1ª edição','0177169405031');
+insert into livro values('2001: Uma Odisséia no Espaço','Arthur C. Clarke','1ª edição','1462982773841');
+
+
+-- INSERT DA TABELA ATENDENTE
+-- nome, matricula, email
+insert into atendente values('Juliana Paiva Moreira','00523','julianamoreira@gmail.com');
+insert into atendente values('Samantha Leão Gomes','00896','samanthagomes@gmail.com');
+insert into atendente values('Gustavo Braga Santos','09982','gustavosantos@gmail.com');
+insert into atendente values('Carlos Pereira Montes','03569','carlosmontes@gmail.com');
+
+-- INSERT DA TABELA RESERVA
+-- data_inicio, data_retorno, fk_id_aluno, fk_id_livro, fk_id_atendente
+insert into reserva values('2022-08-11','2022-12-16',1,5,4);
+insert into reserva values('2022-09-13','2022-12-30',2,4,3);
+insert into reserva values('2023-01-10','2022-02-15',3,3,2);
+insert into reserva values('2023-01-05','2022-01-30',4,1,1);
+
+
+
+
+SELECT alu.nomeAluno AS 'nome do aluno', li.nome AS 'nome do livro', aten.nome AS 'nome do atendente',
+	   alu.email AS 'email do aluno', telefone1, telefone2, data_inicio, data_entrega
+
+FROM aluno alu
+		INNER JOIN telefone tell ON id_aluno = id_telefone
+			INNER JOIN livro li ON id_telefone = id_livro
+				INNER JOIN atendente aten ON id_livro = id_atendente
+			 INNER JOIN reserva ON id_reserva = id_aluno
+
+WHERE data_inicio >= '2022'
+
+ORDER BY nomeAluno;
+
+
+
+
+
+SELECT alu.nomeAluno AS 'nome do aluno',  data_inicio,
+	   li.nome AS 'nomeLivro',aten.nome AS 'nome do atendente', data_entrega
+
+FROM aluno alu
+		INNER JOIN atendente aten ON id_aluno = id_atendente
+			INNER JOIN livro li ON id_atendente = id_livro
+		INNER JOIN reserva ON id_livro = id_reserva
+			
+WHERE nomeAluno like '%ss%';
